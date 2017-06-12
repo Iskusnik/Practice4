@@ -10,6 +10,7 @@ namespace Practice4
     {
         static void FiveMultipliedXTimes(ref char[] arr, int X)
         {
+
             char[] buf = new char[arr.Length];
             char[] multiplier;
             for (int i = 0; i < X; i++)
@@ -120,21 +121,32 @@ namespace Practice4
                 }
                 a[i] = char.ConvertFromUtf32(charCode + '0')[0];
             }
+            if (a.Last() == '0')
+            {
+                int i = a.Length - 1;
+                while (a[i] == '0')
+                    i--;
+                temp = new char[i + 1];
+                for (int j = 0; j < temp.Length; j++)
+                    temp[j] = a[j]; 
+            }
 
-            return a;
+            return temp;
         }
         static void Main(string[] args)
         {
             //Можно заметить, что цифры числа 2^(-n) совпадают с цифрами числа 5^(n)
             //Соответсвенно можно найти цифрый числа 5^200
             //Напишем длинную арифметику
-            char[] Pow5in200 = new char[1000];
+            char[] Pow5in200 = new char[1];
             Pow5in200[0] = '1';
             char[] a = { '5', '9', '9', '9' };//    9995
             char[] b = { '5', '1', '2' };     //   + 215
                                               // = 10210
-            FiveMultipliedXTimes(ref Pow5in200, 4);
+            FiveMultipliedXTimes(ref Pow5in200, 200);
             Console.WriteLine(Pow5in200);
+
+        
         }
     }
 }
