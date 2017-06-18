@@ -203,7 +203,7 @@ namespace Practice4
                                               //Понятно, что если цифра больше равна 2, то в записи этого разряда после деления будет целочисленное деление этой цифры в виде числа на 2
 
             MultipliedByFiveXTimes(ref Pow5in200, 7);
-            Console.WriteLine(Pow5in200);//
+            Console.WriteLine(Pow5in200);
 
         
         }
