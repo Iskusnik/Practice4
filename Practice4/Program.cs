@@ -11,8 +11,27 @@ namespace Practice4
 
         class VeryLongDouble
         {
-            public char[] IntegralPart { get; set; }
-            public char[] FloatPart { get; set; }
+            public char[] IntegralPart;
+            public char[] FloatPart;
+            
+            public VeryLongDouble()
+            {
+                IntegralPart = new char[] { '0' };
+                FloatPart = new char[] { '0' };
+            }
+
+            public VeryLongDouble(VeryLongDouble a)
+            {
+                IntegralPart = new char[a.IntegralPart.Length];
+                FloatPart = new char[a.FloatPart.Length];
+
+                for (int i = 0; i < a.IntegralPart.Length; i++)
+                    IntegralPart[i] = a.IntegralPart[i];
+
+                for (int i = 0; i < a.FloatPart.Length; i++)
+                    FloatPart[i] = a.FloatPart[i];
+            }
+
 
             public override string ToString()
             {
@@ -21,9 +40,41 @@ namespace Practice4
                 for (int i = IntegralPart.Length - 1; i >= 0; i--)
                     Info += IntegralPart[i].ToString();
                 Info += ",";
-                Info += FloatPart.ToString();
+                for (int i = 0; i < FloatPart.Length; i++)
+                    Info += FloatPart[i].ToString();
                 return Info;
             }
+
+            public void CutZeroes()
+            {
+                char[] temp;
+
+                if (IntegralPart.Last() == '0' && IntegralPart.Length != 1)
+                {
+                    int i = IntegralPart.Length - 1;
+                    while (IntegralPart[i] == '0')
+                        i--;
+                    temp = new char[i + 1];
+                    for (int j = 0; j < temp.Length; j++)
+                        temp[j] = IntegralPart[j];
+
+                    IntegralPart = (char[])temp.Clone();
+                }
+                if (FloatPart.Last() == '0' && FloatPart.Length != 1)
+                {
+                    int i = FloatPart.Length - 1;
+                    while (FloatPart[i] == '0')
+                        i--;
+                    temp = new char[i + 1];
+                    for (int j = 0; j < temp.Length; j++)
+                        temp[j] = FloatPart[j];
+
+
+                    FloatPart = (char[])temp.Clone();
+                }
+            }
+
+
         }
 
         static void MultipliedByFiveXTimes(ref char[] arr, int X)
@@ -99,12 +150,12 @@ namespace Practice4
                         multiplier[j] = '5';
                         multiplier[j + 1] = '4';
                     }
-                    buf = Plus(buf, multiplier);
+                   // buf = Plus(buf, multiplier);
                 }
                 arr = buf;
             }
         }
-
+        
         //Приведение к одинаковому числу цифр
         static void ToSameLength(ref char[] a, ref char[] b)
         {
@@ -132,37 +183,64 @@ namespace Practice4
                 if (a[i] == 0)
                     a[i] = '0';
         }
-        static char[] Plus(char[] a, char[] b)
+
+        static VeryLongDouble Plus (VeryLongDouble a, VeryLongDouble b)
         {
-            ToSameLength(ref a, ref b);
-
-            for (int i = 0; i < b.Length; i++)
-            {
-                int charCode = a[i] - '0' + b[i] - '0';
-                if (charCode >= 10)
-                {
-                    a[i + 1] = char.ConvertFromUtf32(a[i + 1] + 1)[0];
-                    charCode -= 10;
-                }
-                a[i] = char.ConvertFromUtf32(charCode + '0')[0];
-            }
-            if (a.Last() == '0')
-            {
-                int i = a.Length - 1;
-                while (a[i] == '0')
-                    i--;
-                temp = new char[i + 1];
-                for (int j = 0; j < temp.Length; j++)
-                    temp[j] = a[j]; 
-            }
-
+            a.CutZeroes();
+            b.CutZeroes();
+            VeryLongDouble buf, temp = new VeryLongDouble();
+            temp.IntegralPart = PlusIntegralPart(a, b);
+            temp.FloatPart = PlusFloatPart(a, b, out buf);
+            temp.IntegralPart = PlusIntegralPart(temp, buf);
+            temp.CutZeroes();
             return temp;
         }
-        static char[] Minus(char[] a, char[] b)
+        static char[] PlusIntegralPart(VeryLongDouble a, VeryLongDouble b)
         {
-            return null;
-        }
+            
+            ToSameLength(ref a.IntegralPart, ref b.IntegralPart);
 
+            VeryLongDouble temp = new VeryLongDouble(a);
+
+            for (int i = 0; i < b.IntegralPart.Length; i++)
+            {
+                int charCode = temp.IntegralPart[i] - '0' + b.IntegralPart[i] - '0';
+                if (charCode >= 10)
+                {
+                    temp.IntegralPart[i + 1] = char.ConvertFromUtf32(temp.IntegralPart[i + 1] + 1)[0];
+                    charCode -= 10;
+                }
+                temp.IntegralPart[i] = char.ConvertFromUtf32(charCode + '0')[0];
+            }
+            temp.CutZeroes();
+            return temp.IntegralPart;
+        }
+        static char[] PlusFloatPart(VeryLongDouble a, VeryLongDouble b, out VeryLongDouble buf)
+        {
+
+            buf = new VeryLongDouble();
+            ToSameLength(ref a.IntegralPart, ref b.IntegralPart);
+
+            VeryLongDouble temp = new VeryLongDouble(a);
+
+
+            for (int i = b.FloatPart.Length - 1; i >= 0; i--)
+            {
+                int charCode = temp.FloatPart[i] - '0' + b.FloatPart[i] - '0';
+                if (charCode >= 10)
+                {
+                    if (i != 0)
+                        temp.FloatPart[i - 1] = char.ConvertFromUtf32(a.FloatPart[i - 1] + 1)[0];
+                    else
+                        buf.IntegralPart = new char[] { '1' };
+                    charCode -= 10;
+                }
+                temp.FloatPart[i] = char.ConvertFromUtf32(charCode + '0')[0];
+            }
+            
+            return temp.FloatPart;
+        }
+        
         static void DividedByTwoXTimes(ref char[] arr, int X)
         {
 
@@ -184,28 +262,41 @@ namespace Practice4
             //Можно заметить, что цифры числа 2^(-n) совпадают с цифрами числа 5^(n)
             //Соответсвенно можно найти цифрый числа 5^200
             //Напишем длинную арифметику
+
+
+
+            //    9995
+            //   + 215
+            // = 10210
+            //Вариант 1
+            //Вообще, можно посчитать число нулей, умножая полученное число на 2, 
+            //пока не станет равным 1*10^T, где T = Длинна исходного числа + число нолей, которые стоят перед этим числом в записи дроби + 1(Сама еденица, которая не нужна в записи. Соответсвует d0*10^0, которое не нужно в записи)
+            //
+            //
+            //Вариант 2
+            //Написать деление на 2
+            //
+            //Вариант 3
+            //Ноль прибавляется, если первая значащая цифра меньше делителя длины не более цифры
+            //Т.е если в массиве число 0,0125, то при делении на 2 будет (1<2) 0,00625. 
+            //Понятно, что если цифра больше равна 2, то в записи этого разряда после деления будет целочисленное деление этой цифры в виде числа на 2
+
+
             char[] Pow5in200 = new char[1];
             Pow5in200[0] = '1';
-            char[] a = { '5', '9', '9', '9' };//    9995
-            char[] b = { '5', '1', '2' };     //   + 215
-                                              // = 10210
-                                              //Вариант 1
-                                              //Вообще, можно посчитать число нулей, умножая полученное число на 2, 
-                                              //пока не станет равным 1*10^T, где T = Длинна исходного числа + число нолей, которые стоят перед этим числом в записи дроби + 1(Сама еденица, которая не нужна в записи. Соответсвует d0*10^0, которое не нужно в записи)
-                                              //
-                                              //
-                                              //Вариант 2
-                                              //Написать деление на 2
-                                              //
-                                              //Вариант 3
-                                              //Ноль прибавляется, если первая значащая цифра меньше делителя длины не более цифры
-                                              //Т.е если в массиве число 0,0125, то при делении на 2 будет (1<2) 0,00625. 
-                                              //Понятно, что если цифра больше равна 2, то в записи этого разряда после деления будет целочисленное деление этой цифры в виде числа на 2
+            VeryLongDouble a = new VeryLongDouble();
+            a.IntegralPart = new char[] { '5', '9', '9', '9' };
+            VeryLongDouble b = new VeryLongDouble();
+            b.IntegralPart = new char[] { '5', '1', '2' };
 
             MultipliedByFiveXTimes(ref Pow5in200, 7);
-            Console.WriteLine(Pow5in200);
+            Console.WriteLine(Plus(a, b).ToString());
 
-        
+            a.FloatPart = new char[] { '9', '9' , '9' };
+            b.FloatPart = new char[] { '0', '9' };
+            a = Plus(a, b);
+            a.CutZeroes();
+            Console.WriteLine(a.ToString());
         }
     }
 }
