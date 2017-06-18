@@ -8,11 +8,30 @@ namespace Practice4
 {
     class Program
     {
-        static void FiveMultipliedXTimes(ref char[] arr, int X)
+
+        class VeryLongDouble
+        {
+            public char[] IntegralPart { get; set; }
+            public char[] FloatPart { get; set; }
+
+            public override string ToString()
+            {
+                string Info = "";
+
+                for (int i = IntegralPart.Length - 1; i >= 0; i--)
+                    Info += IntegralPart[i].ToString();
+                Info += ",";
+                Info += FloatPart.ToString();
+                return Info;
+            }
+        }
+
+        static void MultipliedByFiveXTimes(ref char[] arr, int X)
         {
 
             char[] buf = new char[arr.Length];
             char[] multiplier;
+            if (arr.Last() == '1')
             for (int i = 0; i < X; i++)
             {
                 buf = new char[arr.Length];
@@ -85,16 +104,18 @@ namespace Practice4
                 arr = buf;
             }
         }
-        static char[] Plus(char[] a, char[] b)
+
+        //Приведение к одинаковому числу цифр
+        static void ToSameLength(ref char[] a, ref char[] b)
         {
-            char[] temp; //Приведение к одинаковому числу цифр
+            char[] temp; 
             if (a.Length > b.Length)
             {
                 temp = new char[a.Length + 1];
                 for (int i = 0; i < b.Length; i++)
                     temp[i] = b[i];
                 b = a;
-                a = temp; 
+                a = temp;
             }
             else
             {
@@ -110,6 +131,10 @@ namespace Practice4
             for (int i = 0; i < a.Length; i++)
                 if (a[i] == 0)
                     a[i] = '0';
+        }
+        static char[] Plus(char[] a, char[] b)
+        {
+            ToSameLength(ref a, ref b);
 
             for (int i = 0; i < b.Length; i++)
             {
@@ -133,6 +158,27 @@ namespace Practice4
 
             return temp;
         }
+        static char[] Minus(char[] a, char[] b)
+        {
+            return null;
+        }
+
+        static void DividedByTwoXTimes(ref char[] arr, int X)
+        {
+
+            char[] buf = new char[arr.Length];
+            
+            for (int i = 0; i < X; i++)
+            {
+                buf = new char[arr.Length];
+                for (int j = 0; j < arr.Length; j++)
+                {
+
+                    
+                }
+                arr = buf;
+            }
+        }
         static void Main(string[] args)
         {
             //Можно заметить, что цифры числа 2^(-n) совпадают с цифрами числа 5^(n)
@@ -143,7 +189,20 @@ namespace Practice4
             char[] a = { '5', '9', '9', '9' };//    9995
             char[] b = { '5', '1', '2' };     //   + 215
                                               // = 10210
-            FiveMultipliedXTimes(ref Pow5in200, 200);
+                                              //Вариант 1
+                                              //Вообще, можно посчитать число нулей, умножая полученное число на 2, 
+                                              //пока не станет равным 1*10^T, где T = Длинна исходного числа + число нолей, которые стоят перед этим числом в записи дроби + 1(Сама еденица, которая не нужна в записи. Соответсвует d0*10^0, которое не нужно в записи)
+                                              //
+                                              //
+                                              //Вариант 2
+                                              //Написать деление на 2
+                                              //
+                                              //Вариант 3
+                                              //Ноль прибавляется, если первая значащая цифра меньше делителя длины не более цифры
+                                              //Т.е если в массиве число 0,0125, то при делении на 2 будет (1<2) 0,00625. 
+                                              //Понятно, что если цифра больше равна 2, то в записи этого разряда после деления будет целочисленное деление этой цифры в виде числа на 2
+
+            MultipliedByFiveXTimes(ref Pow5in200, 7);
             Console.WriteLine(Pow5in200);
 
         
