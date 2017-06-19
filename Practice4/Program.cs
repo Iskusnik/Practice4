@@ -32,6 +32,17 @@ namespace Practice4
                     FloatPart[i] = a.FloatPart[i];
             }
 
+            public VeryLongDouble(int nInt, int nFloat)
+            {
+                IntegralPart = new char[nInt + 1];
+                FloatPart = new char[nFloat + 1];
+
+                for (int i = 0; i < nInt + 1; i++)
+                    IntegralPart[i] = '0';
+                for (int i = 0; i < nFloat + 1; i++)
+                    FloatPart[i] = '0';
+
+            }
 
             public override string ToString()
             {
@@ -52,7 +63,7 @@ namespace Practice4
                 if (IntegralPart.Last() == '0' && IntegralPart.Length != 1)
                 {
                     int i = IntegralPart.Length - 1;
-                    while (IntegralPart[i] == '0')
+                    while (i != 0 && IntegralPart[i] == '0')
                         i--;
                     temp = new char[i + 1];
                     for (int j = 0; j < temp.Length; j++)
@@ -63,7 +74,7 @@ namespace Practice4
                 if (FloatPart.Last() == '0' && FloatPart.Length != 1)
                 {
                     int i = FloatPart.Length - 1;
-                    while (FloatPart[i] == '0')
+                    while (i != 0 && FloatPart[i] == '0')
                         i--;
                     temp = new char[i + 1];
                     for (int j = 0; j < temp.Length; j++)
@@ -241,21 +252,133 @@ namespace Practice4
             return temp.FloatPart;
         }
         
-        static void DividedByTwoXTimes(ref char[] arr, int X)
+        static void DividedByTwoXTimes(ref VeryLongDouble a, int X)
         {
 
-            char[] buf = new char[arr.Length];
-            
+            VeryLongDouble buf = new VeryLongDouble();
+
             for (int i = 0; i < X; i++)
             {
-                buf = new char[arr.Length];
-                for (int j = 0; j < arr.Length; j++)
-                {
+                buf = new VeryLongDouble(a.IntegralPart.Length, a.FloatPart.Length);
 
-                    
+                #region IntegralPartDivision
+                for (int j = a.IntegralPart.Length - 1; j >= 0; j--)
+                {
+                    if (a.IntegralPart[j] == '0')
+                        continue;
+
+                    if (a.IntegralPart[j] == '1')
+                    {
+                        if (j != 0)
+                            buf.IntegralPart[j - 1] = '5';
+                        else
+                            buf.FloatPart[0] = '5';
+                    }
+
+                    if (a.IntegralPart[j] == '2')
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(1)[0];
+
+                    if (a.IntegralPart[j] == '3')
+                    {
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(1)[0];
+                        if (j != 0)
+                            buf.IntegralPart[j - 1] = '5';
+                        else
+                            buf.FloatPart[0] = '5';
+                    }
+
+                    if (a.IntegralPart[j] == '4')
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(2)[0]; ;
+
+
+                    if (a.IntegralPart[j] == '5')
+                    {
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(2)[0];
+                        if (j != 0)
+                            buf.IntegralPart[j - 1] = '5';
+                        else
+                            buf.FloatPart[0] = '5';
+                    }
+
+                    if (a.IntegralPart[j] == '6')
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(3)[0];
+
+                    if (a.IntegralPart[j] == '7')
+                    {
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(3)[0];
+                        if (j != 0)
+                            buf.IntegralPart[j - 1] = '5';
+                        else
+                            buf.FloatPart[0] = '5';
+                    }
+
+                    if (a.IntegralPart[j] == '8')
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(4)[0];
+
+                    if (a.IntegralPart[j] == '9')
+                    {
+                        buf.IntegralPart[j] += char.ConvertFromUtf32(4)[0];
+                        if (j != 0)
+                            buf.IntegralPart[j - 1] = '5';
+                        else
+                            buf.FloatPart[0] = '5';
+                    }
                 }
-                arr = buf;
+                #endregion
+                #region FloatPartDivision
+                for (int j = 0; j < a.FloatPart.Length; j++)
+                {
+                    if (a.FloatPart[j] == '0')
+                        continue;
+
+                    if (a.FloatPart[j] == '1')
+                        buf.FloatPart[j + 1] = '5';
+                   
+
+                    if (a.FloatPart[j] == '2')
+                        buf.FloatPart[j] += char.ConvertFromUtf32(1)[0];
+
+                    if (a.FloatPart[j] == '3')
+                    {
+                        buf.FloatPart[j] += char.ConvertFromUtf32(1)[0];
+                        buf.FloatPart[j + 1] = '5';
+                    }
+
+                    if (a.FloatPart[j] == '4')
+                        buf.FloatPart[j] += char.ConvertFromUtf32(2)[0]; ;
+
+
+                    if (a.FloatPart[j] == '5')
+                    {
+                        buf.FloatPart[j] += char.ConvertFromUtf32(2)[0];
+                        buf.FloatPart[j + 1] = '5';
+                    }
+                    
+
+                    if (a.FloatPart[j] == '6')
+                        buf.FloatPart[j] += char.ConvertFromUtf32(3)[0];
+
+                    if (a.FloatPart[j] == '7')
+                    {
+                        buf.FloatPart[j] += char.ConvertFromUtf32(3)[0];
+                        buf.FloatPart[j + 1] = '5';
+                    }
+
+                    if (a.FloatPart[j] == '8')
+                        buf.FloatPart[j] += char.ConvertFromUtf32(4)[0];
+
+                    if (a.FloatPart[j] == '9')
+                    {
+                        buf.FloatPart[j] += char.ConvertFromUtf32(4)[0];
+                        buf.FloatPart[j + 1] = '5';
+                    }
+                }
+                #endregion
+                a = buf;
+                a.CutZeroes();
             }
+
+            a.CutZeroes();
         }
         static void Main(string[] args)
         {
@@ -282,9 +405,10 @@ namespace Practice4
             //Понятно, что если цифра больше равна 2, то в записи этого разряда после деления будет целочисленное деление этой цифры в виде числа на 2
 
 
+            
+            VeryLongDouble a = new VeryLongDouble();/*
             char[] Pow5in200 = new char[1];
             Pow5in200[0] = '1';
-            VeryLongDouble a = new VeryLongDouble();
             a.IntegralPart = new char[] { '5', '9', '9', '9' };
             VeryLongDouble b = new VeryLongDouble();
             b.IntegralPart = new char[] { '5', '1', '2' };
@@ -292,11 +416,16 @@ namespace Practice4
             MultipliedByFiveXTimes(ref Pow5in200, 7);
             Console.WriteLine(Plus(a, b).ToString());
 
-            a.FloatPart = new char[] { '9', '9' , '9' };
-            b.FloatPart = new char[] { '0', '9' };
+            a.FloatPart = new char[] { '9', '4' , '9' };
+            b.FloatPart = new char[] { '0', '5', '3' };
             a = Plus(a, b);
             a.CutZeroes();
             Console.WriteLine(a.ToString());
+            */
+            a.FloatPart = new char[] { '0' };
+            a.IntegralPart = new char[] { '1' };
+            DividedByTwoXTimes(ref a, 200);
+            Console.WriteLine(a);
         }
     }
 }
