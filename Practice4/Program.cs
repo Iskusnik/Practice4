@@ -166,35 +166,6 @@ namespace Practice4
             }
         }
         
-        //Приведение к одинаковому числу цифр
-        static void ToSameLength(ref char[] a, ref char[] b)
-        {
-            char[] temp; 
-            if (a.Length > b.Length)
-            {
-                temp = new char[a.Length + 1];
-                for (int i = 0; i < b.Length; i++)
-                    temp[i] = b[i];
-                b = a;
-                a = temp;
-            }
-            else
-            {
-                temp = new char[b.Length];
-                for (int i = 0; i < a.Length; i++)
-                    temp[i] = a[i];
-                a = temp;
-            }
-            for (int i = 0; i < b.Length; i++)
-                if (b[i] == 0)
-                    b[i] = '0';
-
-            for (int i = 0; i < a.Length; i++)
-                if (a[i] == 0)
-                    a[i] = '0';
-        }
-
-        
         static void DividedByTwoXTimes(ref VeryLongDouble a, int X)
         {
 
