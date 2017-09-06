@@ -87,85 +87,6 @@ namespace Practice4
 
         }
 
-        static void MultipliedByFiveXTimes(ref char[] arr, int X)
-        {
-
-            char[] buf = new char[arr.Length];
-            char[] multiplier;
-            if (arr.Last() == '1')
-            for (int i = 0; i < X; i++)
-            {
-                buf = new char[arr.Length];
-                for (int j = 0; j < arr.Length; j++)
-                {
-                    
-                    multiplier = new char[j + 2];
-                    
-                    if (arr[j] == '0')
-                    {
-                        multiplier[j] = '0';
-                        multiplier[j + 1] = '0';
-                    }
-
-                    if (arr[j] == '1')
-                    {
-                        multiplier[j] = '5';
-                        multiplier[j + 1] = '0';
-                    }
-
-                    if (arr[j] == '2')
-                    {
-                        multiplier[j] = '0';
-                        multiplier[j + 1] = '1';
-                    }
-
-                    if (arr[j] == '3')
-                    {
-                        multiplier[j] = '5';
-                        multiplier[j + 1] = '1';
-                    }
-
-                    if (arr[j] == '4')
-                    {
-                        multiplier[j] = '0';
-                        multiplier[j + 1] = '2';
-                    }
-
-                    if (arr[j] == '5')
-                    {
-                        multiplier[j] = '5';
-                        multiplier[j + 1] = '2';
-                    }
-
-                    if (arr[j] == '6')
-                    {
-                        multiplier[j] = '0';
-                        multiplier[j + 1] = '3';
-                    }
-
-                    if (arr[j] == '7')
-                    {
-                        multiplier[j] = '5';
-                        multiplier[j + 1] = '3';
-                    }
-
-                    if (arr[j] == '8')
-                    {
-                        multiplier[j] = '0';
-                        multiplier[j + 1] = '4';
-                    }
-
-                    if (arr[j] == '9')
-                    {
-                        multiplier[j] = '5';
-                        multiplier[j + 1] = '4';
-                    }
-                   // buf = Plus(buf, multiplier);
-                }
-                arr = buf;
-            }
-        }
-        
         static void DividedByTwoXTimes(ref VeryLongDouble a, int X)
         {
 
@@ -294,6 +215,7 @@ namespace Practice4
 
             a.CutZeroes();
         }
+
         static void Main(string[] args)
         {   
             VeryLongDouble a = new VeryLongDouble();
