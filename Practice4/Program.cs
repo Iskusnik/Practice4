@@ -85,7 +85,6 @@ namespace Practice4
                 }
             }
 
-
         }
 
         static void MultipliedByFiveXTimes(ref char[] arr, int X)
@@ -195,62 +194,6 @@ namespace Practice4
                     a[i] = '0';
         }
 
-        static VeryLongDouble Plus (VeryLongDouble a, VeryLongDouble b)
-        {
-            a.CutZeroes();
-            b.CutZeroes();
-            VeryLongDouble buf, temp = new VeryLongDouble();
-            temp.IntegralPart = PlusIntegralPart(a, b);
-            temp.FloatPart = PlusFloatPart(a, b, out buf);
-            temp.IntegralPart = PlusIntegralPart(temp, buf);
-            temp.CutZeroes();
-            return temp;
-        }
-        static char[] PlusIntegralPart(VeryLongDouble a, VeryLongDouble b)
-        {
-            
-            ToSameLength(ref a.IntegralPart, ref b.IntegralPart);
-
-            VeryLongDouble temp = new VeryLongDouble(a);
-
-            for (int i = 0; i < b.IntegralPart.Length; i++)
-            {
-                int charCode = temp.IntegralPart[i] - '0' + b.IntegralPart[i] - '0';
-                if (charCode >= 10)
-                {
-                    temp.IntegralPart[i + 1] = char.ConvertFromUtf32(temp.IntegralPart[i + 1] + 1)[0];
-                    charCode -= 10;
-                }
-                temp.IntegralPart[i] = char.ConvertFromUtf32(charCode + '0')[0];
-            }
-            temp.CutZeroes();
-            return temp.IntegralPart;
-        }
-        static char[] PlusFloatPart(VeryLongDouble a, VeryLongDouble b, out VeryLongDouble buf)
-        {
-
-            buf = new VeryLongDouble();
-            ToSameLength(ref a.IntegralPart, ref b.IntegralPart);
-
-            VeryLongDouble temp = new VeryLongDouble(a);
-
-
-            for (int i = b.FloatPart.Length - 1; i >= 0; i--)
-            {
-                int charCode = temp.FloatPart[i] - '0' + b.FloatPart[i] - '0';
-                if (charCode >= 10)
-                {
-                    if (i != 0)
-                        temp.FloatPart[i - 1] = char.ConvertFromUtf32(a.FloatPart[i - 1] + 1)[0];
-                    else
-                        buf.IntegralPart = new char[] { '1' };
-                    charCode -= 10;
-                }
-                temp.FloatPart[i] = char.ConvertFromUtf32(charCode + '0')[0];
-            }
-            
-            return temp.FloatPart;
-        }
         
         static void DividedByTwoXTimes(ref VeryLongDouble a, int X)
         {
@@ -381,47 +324,8 @@ namespace Practice4
             a.CutZeroes();
         }
         static void Main(string[] args)
-        {
-            //Можно заметить, что цифры числа 2^(-n) совпадают с цифрами числа 5^(n)
-            //Соответсвенно можно найти цифрый числа 5^200
-            //Напишем длинную арифметику
-
-
-
-            //    9995
-            //   + 215
-            // = 10210
-            //Вариант 1
-            //Вообще, можно посчитать число нулей, умножая полученное число на 2, 
-            //пока не станет равным 1*10^T, где T = Длинна исходного числа + число нолей, которые стоят перед этим числом в записи дроби + 1(Сама еденица, которая не нужна в записи. Соответсвует d0*10^0, которое не нужно в записи)
-            //
-            //
-            //Вариант 2
-            //Написать деление на 2
-            //
-            //Вариант 3
-            //Ноль прибавляется, если первая значащая цифра меньше делителя длины не более цифры
-            //Т.е если в массиве число 0,0125, то при делении на 2 будет (1<2) 0,00625. 
-            //Понятно, что если цифра больше равна 2, то в записи этого разряда после деления будет целочисленное деление этой цифры в виде числа на 2
-
-
-            
-            VeryLongDouble a = new VeryLongDouble();/*
-            char[] Pow5in200 = new char[1];
-            Pow5in200[0] = '1';
-            a.IntegralPart = new char[] { '5', '9', '9', '9' };
-            VeryLongDouble b = new VeryLongDouble();
-            b.IntegralPart = new char[] { '5', '1', '2' };
-
-            MultipliedByFiveXTimes(ref Pow5in200, 7);
-            Console.WriteLine(Plus(a, b).ToString());
-
-            a.FloatPart = new char[] { '9', '4' , '9' };
-            b.FloatPart = new char[] { '0', '5', '3' };
-            a = Plus(a, b);
-            a.CutZeroes();
-            Console.WriteLine(a.ToString());
-            */
+        {   
+            VeryLongDouble a = new VeryLongDouble();
             a.FloatPart = new char[] { '0' };
             a.IntegralPart = new char[] { '1' };
             DividedByTwoXTimes(ref a, 200);
